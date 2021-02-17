@@ -45,4 +45,17 @@ resource "azurerm_network_security_group" "createbyazcliNSG" {
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
-}  
+}
+
+resource "azurerm_network_interface" "createbyazcliVMNic" {
+    name                        = "createbyazcliVMNic"
+    location                    = azurerm_resource_group.lmarcus.location
+    resource_group_name         = azurerm_resource_group.lmarcus.name
+
+    ip_configuration {
+        name                          = "ipconfigcreatebyazcli"
+        subnet_id                     = azurerm_subnet.createbyazcliSubnet.id
+        private_ip_address_allocation = "Dynamic"
+        public_ip_address_id          = azurerm_public_ip.createbyazcliPublicIP.id
+    }
+}
