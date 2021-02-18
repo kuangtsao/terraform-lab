@@ -59,3 +59,7 @@ resource "azurerm_network_interface" "createbyazcliVMNic" {
         public_ip_address_id          = azurerm_public_ip.createbyazcliPublicIP.id
     }
 }
+resource "azurerm_network_interface_security_group_association" "createbyazcliVMNic_NSG_association" {
+    network_interface_id      = azurerm_network_interface.createbyazcliVMNic.id
+    network_security_group_id = azurerm_network_security_group.createbyazcliNSG.id
+}
