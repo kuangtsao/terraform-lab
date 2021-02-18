@@ -59,7 +59,38 @@ resource "azurerm_network_interface" "createbyazcliVMNic" {
         public_ip_address_id          = azurerm_public_ip.createbyazcliPublicIP.id
     }
 }
+
 resource "azurerm_network_interface_security_group_association" "createbyazcliVMNic_NSG_association" {
     network_interface_id      = azurerm_network_interface.createbyazcliVMNic.id
     network_security_group_id = azurerm_network_security_group.createbyazcliNSG.id
+}
+
+resource "azurerm_linux_virtual_machine" "createbyazcli" {
+    name                  = "createbyazcli"
+    location              = azurerm_resource_group.lmarcus.location
+    resource_group_name   = azurerm_resource_group.lmarcus.name
+    network_interface_ids = [azurerm_network_interface.createbyazcliVMNic.id]
+    size                  = "Standard_DS1_v2"
+
+    os_disk {
+        name              = "createbyazcli_disk1_80eec4db622e4c6da8b14ffdbb660397"
+        caching           = "ReadWrite"
+        storage_account_type = "Premium_LRS"
+    }
+
+    source_image_reference {
+        publisher = "Canonical"
+        offer     = "UbuntuServer"
+        sku       = "18.04-LTS"
+        version   = "latest"
+    }
+
+    computer_name  = "createbyazcli"
+    admin_username = "lmarcus"
+    disable_password_authentication = true
+
+    admin_ssh_key {
+        username       = "lmarcus"
+        public_key     = file("~/.ssh/id_rsa.pub")
+    }
 }
