@@ -29,6 +29,7 @@ resource "azurerm_public_ip" "createbyazcliPublicIP" {
   resource_group_name = azurerm_resource_group.lmarcus.name
   allocation_method   = "Dynamic"
 }
+
 resource "azurerm_network_security_group" "createbyazcliNSG" {
   name                = "createbyazcliNSG"
   location            = azurerm_resource_group.lmarcus.location
